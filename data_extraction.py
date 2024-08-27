@@ -1,18 +1,15 @@
-# data_extraction.py
-
 import google.generativeai as genai
-import os
+import streamlit as st
 import re
-from dotenv import load_dotenv
-
-# Load environment variables
-load_dotenv()
-
-# Configure Google Gemini AI
-genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
 def process_image_with_ai(image):
     """Use an AI model to extract items and prices from the image."""
+    if not st.session_state.api_key:
+        raise ValueError("API key is not set.")
+    
+    # Configure AI model with the user-provided API key
+    genai.configure(api_key=st.session_state.api_key)
+
     image_data = {
         "mime_type": "image/jpeg",  # or the appropriate mime type for your image
         "data": image
